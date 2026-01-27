@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>United Field Services | Nationwide Property Maintenance Services</title>
+    <link rel="icon" type="image/jpeg" href="/united_field_services_inc_logo.jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #000000;
+            --primary-light: #584f4f;
+            --primary-dark: #5a5050;
+            --secondary: #BA2A34;
+            --light: #f5f5f5;
+            --dark: #333;
+            --gray: #757575;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Work Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--white);
+        }
+        
+        h1, h2, h3, h4 {
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            font-family: 'Work Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        header .container {
+            width: 96%;
+            max-width: 1600px;
+            padding: 40px 40px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            margin-top: 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(186, 42, 52, 0.18);
+        }
+        
+        .btn:hover {
+            background-color: #8c1e24;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(140, 30, 36, 0.25);
+        }
+        
+        .btn-secondary {
+            background-color: #8c1e24;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #a42a34;
+        }
+
+        .btn-white {
+            background-color: var(--white);
+            color: #000000 !important;
+            border: 1px solid var(--primary);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .btn-white:hover {
+            background-color: #f2f2f2;
+            color: #000000 !important;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary);
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: transparent;
+            box-shadow: none;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 0;
+            gap: 40px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 65px;
+            margin-right: 0;
+            transition: filter 0.3s ease;
+        }
+
+        header:not(.scrolled) .logo img {
+            filter: brightness(0) invert(1);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            gap: 48px;
+        }
+        
+        .nav-menu li {
+            margin-left: 0;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 600;
+            transition: color 0.3s ease;
+            line-height: 1.2;
+            font-size: 1.2rem;
+            letter-spacing: 0.01em;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--secondary);
+        }
+
+        header.scrolled .nav-menu a {
+            color: var(--dark);
+        }
+
+        header.scrolled .nav-menu a:hover {
+            color: var(--primary);
+        }
+        
+        .header-contact {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .header-contact a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 600;
+            line-height: 1.2;
+            font-size: 1.2rem;
+        }
+
+        .header-contact a:not(.btn) {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        header.scrolled .header-contact a {
+            color: var(--primary);
+        }
+        
+        .header-contact .btn {
+            margin: 0;
+            padding: 12px 28px;
+            font-size: 1.05rem;
+            white-space: nowrap;
+            color: var(--white) !important;
+            line-height: 1.2;
+        }
+
+        .header-contact .btn-white {
+            color: #000000 !important;
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--white);
+        }
+
+        header.scrolled .mobile-menu {
+            color: var(--dark);
+        }
+        
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(143, 31, 39, 0.8)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 180px 0 100px;
+        }
+
+        .hero .container {
+            max-width: 1400px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* Portal Split Section */
+        .portal-split {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            margin: -60px auto 60px;
+            width: 90%;
+            max-width: 1200px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .portal-split-single {
+            max-width: 760px;
+        }
+
+        .portal-panel {
+            padding: 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .portal-panel[data-link] {
+            cursor: pointer;
+        }
+
+        .portal-panel[data-link]:hover {
+            filter: brightness(0.98);
+        }
+
+        .portal-panel h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .portal-panel p {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        .portal-panel-light {
+            background-color: #ffffff;
+        }
+
+        .portal-panel-dark {
+            background-color: var(--light);
+        }
+
+        .portal-pill {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--primary);
+            background-color: rgba(0,0,0,0.08);
+            align-self: center;
+        }
+
+        .portal-pill-alt {
+            background-color: rgba(0,0,0,0.12);
+        }
+
+        /* Quick Contact Form */
+        .quick-contact {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 40px 0;
+        }
+        
+        .quick-contact-form {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .quick-contact-form input {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px;
+            min-width: 200px;
+            width: 200px;
+            height: 48px;
+        }
+        
+        .quick-contact-form button {
+            padding: 12px 15px;
+            min-width: 200px;
+            width: 200px;
+            height: 48px;
+            line-height: 1;
+            margin: 0;
+        }
+        
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .service-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .service-card:hover .service-img img {
+            transform: scale(1.1);
+        }
+        
+        .service-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            text-align: center;
+        }
+        
+        .service-content h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .service-content .btn {
+            align-self: center;
+            margin-top: auto;
+        }
+        
+        /* Why Choose Us */
+        .why-us {
+            background-color: var(--light);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        /* Testimonials */
+        .testimonials-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .testimonial-text::before {
+            content: "";
+            font-size: 60px;
+            color: var(--primary-light);
+            position: absolute;
+            left: -10px;
+            top: -20px;
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-author img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .testimonial-rating {
+            color: var(--secondary);
+            margin-top: 5px;
+        }
+        
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            background-color: var(--light);
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .contact-item i {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-top: 5px;
+        }
+        
+        .contact-form {
+            background-color: var(--light);
+            padding: 30px;
+            border-radius: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 60px 0 30px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h3 {
+            color: var(--white);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-col a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .social-icon {
+            width: 38px;
+            height: 38px;
+            border: 1px solid rgba(255,255,255,0.35);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--white);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .footer-col a:hover {
+            color: var(--white);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* WhatsApp Button for Mobile */
+        .whatsapp-mobile {
+            display: none;
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            left: 20px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-mobile:hover {
+            background-color: #128C7E;
+            transform: scale(1.1);
+        }
+        
+        /* Desktop Quick Callback Form */
+        .quick-callback-float {
+            display: block;
+            position: fixed;
+            width: 280px;
+            bottom: 40px;
+            right: 40px;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            z-index: 100;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .quick-callback-float h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .quick-callback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .close-float {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .quick-callback-float .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        .quick-callback-float .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .quick-callback-float .btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .nav-menu, .header-contact {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .whatsapp-mobile {
+                display: flex;
+            }
+            
+            .quick-callback-float {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-btns .btn {
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 10px;
+            }
+            
+            .quick-contact-form {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .quick-contact-form input,
+            .quick-contact-form button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="https://www.unitedffs.com/wp-content/uploads/2023/03/UFS_LOGO_vec.svg" alt="United Field Services Logo">
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#why-us">Why Choose Us</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            
+            <div class="header-contact">
+                <a href="tel:8774639010"><i class="fas fa-phone"></i> (877) 463-9010</a>
+                <a href="/form?role=client" class="btn btn-secondary">Get Quote</a>
+            </div>
+            
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>AI-Powered Property Maintenance &amp; Preservation</h1>
+            <p>United Field Services combines nationwide expertise with intelligent automation to protect every asset with precision and speed.</p>
+            <div class="hero-btns">
+                <a href="/form?role=client" class="btn btn-white">Get a Quote</a>
+                <a href="#services" class="btn btn-secondary">Our Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portal Split Section -->
+    <section class="portal-split portal-split-single">
+        <div class="portal-panel portal-panel-dark" data-link="/form?role=client" tabindex="0" role="link" aria-label="Property Managers - start service request">
+            <div class="portal-pill portal-pill-alt">Clients</div>
+            <h3>Property Managers</h3>
+            <p>Submit work orders, track property maintenance, and manage your portfolio with our streamlined platform.</p>
+            <a href="/form?role=client" class="btn btn-white">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Services</h2>
+                <p>Comprehensive property maintenance services for residential properties</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Repairs">
+                    </div>
+                    <div class="service-content">
+                        <h3>Repairs</h3>
+                        <p>Our property maintenance services include addressing leaks, repairing damaged walls or floors, and replacing broken fixtures or appliances.</p>
+                        <a href="/form?role=client" class="btn">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cleaning">
+                    </div>
+                    <div class="service-content">
+                        <h3>Cleaning</h3>
+                        <p>We provide regular cleaning services to maintain the presentation of your home, including common areas and individual rooms.</p>
+                        <a href="/form?role=client" class="btn">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Landscaping">
+                    </div>
+                    <div class="service-content">
+                        <h3>Landscaping</h3>
+                        <p>Our property maintenance services include landscaping to keep the exterior of your home or property looking its best.</p>
+                        <a href="/form?role=client" class="btn">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="HVAC Maintenance">
+                    </div>
+                    <div class="service-content">
+                        <h3>HVAC Maintenance</h3>
+                        <p>Our HVAC maintenance services include inspections and repairs to ensure proper functioning of your home's heating and cooling systems.</p>
+                        <a href="/form?role=client" class="btn">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Electrical">
+                    </div>
+                    <div class="service-content">
+                        <h3>Electrical</h3>
+                        <p>We provide electrical inspections and repairs as part of our residential maintenance services to ensure safety and functionality.</p>
+                        <a href="/form?role=client" class="btn">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://infinitecc.com/wp-content/uploads/2023/12/Featured-Image-Website-Blog-Painting-Maintenance-How-Often-Should-You-Paint-Your-Properties-min.webp" alt="Painting">
+                    </div>
+                    <div class="service-content">
+                        <h3>Painting</h3>
+                        <p>Our painting services aim to refresh the appearance of your home, both inside and out, ensuring your property remains attractive.</p>
+                        <a href="/form?role=client" class="btn">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-us" id="why-us">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose Us</h2>
+                <p>Discover what makes United Field Services the preferred choice</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>Nationwide Network</h3>
+                    <p>We have a nationwide network of licensed and qualified contractors ready to handle all aspects of residential maintenance.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-user-cog"></i>
+                    <h3>Customized Plans</h3>
+                    <p>We work closely with you to develop a customized maintenance plan tailored to your needs and budget.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Quick Response</h3>
+                    <p>We address issues quickly to maintain the quality and functionality of your home, providing peace of mind.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Licensed & Qualified</h3>
+                    <p>All our contractors are licensed, qualified professionals dedicated to delivering exceptional work.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Get answers to common questions about our services</p>
+            </div>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Why is residential property maintenance important?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Residential maintenance is essential to ensure that your home remains in good condition, comfortable, and safe. Proper maintenance helps preserve the value of your property, prevents costly repairs, and ensures your home remains a welcoming space for you or your tenants.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How much do residential property maintenance services cost?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our services are tailored to your specific needs and budget. Contact us for a free quote based on your property's requirements.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can residential maintenance services be customized to my needs?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, absolutely! We work closely with you to assess your unique requirements and develop a customized maintenance plan tailored to your needs and budget.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What kind of property maintenance services does United Field Services offer?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We offer a comprehensive range of services including repairs, cleaning, landscaping, HVAC maintenance, electrical work, painting, and more. We also provide rehab & renovation, property preservation, and inspection services.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>United Field Services</h3>
+                    <p>Your trusted partner for maintaining your home's value, comfort, and safety with nationwide residential property maintenance services.</p>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#why-us">Why Choose Us</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#services">Repairs</a></li>
+                        <li><a href="#services">Cleaning</a></li>
+                        <li><a href="#services">Landscaping</a></li>
+                        <li><a href="#services">HVAC Maintenance</a></li>
+                        <li><a href="#services">Electrical</a></li>
+                        <li><a href="#services">Painting</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col" id="contact">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> <a href="tel:8774639010">(877) 463-9010</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@unitedffs.com">info@unitedffs.com</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Nationwide Service</li>
+                        <li class="social-links">
+                            <a href="https://www.facebook.com/unitedfs" class="social-icon" aria-label="Facebook" target="_blank" rel="noopener">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://x.com/Unitedffs" class="social-icon" aria-label="X (Twitter)" target="_blank" rel="noopener">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/company/united-field-services-inc/" class="social-icon" aria-label="LinkedIn" target="_blank" rel="noopener">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://www.youtube.com/@unitedfieldservicesinc" class="social-icon" aria-label="YouTube" target="_blank" rel="noopener">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="https://www.pinterest.com/unitedfieldservices/" class="social-icon" aria-label="Pinterest" target="_blank" rel="noopener">
+                                <i class="fab fa-pinterest-p"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 United Field Services • All Rights Reserved | <a href="https://www.unitedffs.com/privacy-policy/" target="_blank">Privacy Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp for Mobile -->
+    <a href="https://wa.me/18774639010" class="whatsapp-mobile" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+        
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Clickable panels that redirect to our lead form
+        document.querySelectorAll('[data-link]').forEach(function(el) {
+            const href = el.getAttribute('data-link');
+            if (!href) return;
+
+            el.addEventListener('click', function(e) {
+                if (e.target.closest && e.target.closest('a')) return;
+                window.location.href = href;
+            });
+
+            el.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    window.location.href = href;
+                }
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.querySelector('.nav-menu').classList.remove('active');
+                }
+            });
+        });
+
+        // Header transparency toggle on scroll
+        const headerEl = document.querySelector('header');
+        const toggleHeaderBackground = () => {
+            if (window.scrollY > 10) {
+                headerEl.classList.add('scrolled');
+            } else {
+                headerEl.classList.remove('scrolled');
+            }
+        };
+
+        toggleHeaderBackground();
+        window.addEventListener('scroll', toggleHeaderBackground);
+    </script>
+</body>
+</html>

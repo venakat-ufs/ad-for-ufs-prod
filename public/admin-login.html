@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>United Field Services | Admin Login</title>
+  <link rel="icon" type="image/jpeg" href="/united_field_services_inc_logo.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="top-bar">
+    <a class="brand brand-link" href="/">
+      <img src="/united_field_services_inc_logo.jpeg" alt="United Field Services logo" class="brand-logo">
+      <span class="brand-name">United Field Services</span>
+    </a>
+    <div class="top-actions">
+      <a class="admin-link" href="/form">Back to form</a>
+    </div>
+  </header>
+  <main class="page">
+    <section class="card" style="max-width:480px;">
+      <div class="progress">Admin Access</div>
+      <h1>Sign in</h1>
+      <p class="subtitle">Enter your credentials to view captured leads.</p>
+      <div id="error-banner" class="error-banner hidden" style="margin-bottom:12px;"></div>
+      <form id="login-form" class="form-grid" style="grid-template-columns:1fr;">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="admin@example.com">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Enter your password">
+        </div>
+        <div class="form-footer" style="justify-content:flex-start; margin-top:4px;">
+          <button type="submit" class="primary-btn" id="submit-btn">Sign in</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    (async function() {
+      // Fetch Supabase config from server
+      const configRes = await fetch('/api/supabase-config');
+      const config = await configRes.json();
+
+      if (!config.url || !config.anonKey) {
+        document.getElementById('error-banner').textContent = 'Authentication not configured. Please contact administrator.';
+        document.getElementById('error-banner').classList.remove('hidden');
+        return;
+      }
+
+      const supabase = window.supabase.createClient(config.url, config.anonKey);
+
+      // Check if already logged in
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        window.location.href = '/admin';
+        return;
+      }
+
+      const form = document.getElementById('login-form');
+      const errorBanner = document.getElementById('error-banner');
+      const submitBtn = document.getElementById('submit-btn');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorBanner.classList.add('hidden');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Signing in...';
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (error) {
+            errorBanner.textContent = error.message || 'Invalid credentials';
+            errorBanner.classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Sign in';
+            return;
+          }
+
+          if (data.session) {
+            // Store session token in cookie for server-side verification
+            document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=${60 * 60 * 24}; SameSite=Lax`;
+            document.cookie = `sb-refresh-token=${data.session.refresh_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+            window.location.href = '/admin';
+          }
+        } catch (err) {
+          errorBanner.textContent = 'Login failed. Please try again.';
+          errorBanner.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Sign in';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
