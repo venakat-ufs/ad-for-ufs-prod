@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const suggestionModalClose = document.getElementById('suggestion-modal-close');
   const payBtn = document.getElementById('pay-btn');
   const priceAmount = document.getElementById('price-amount');
+  const step1Price = document.getElementById('step1-price');
   const suggestionGrid = document.getElementById('suggestion-grid');
   const suggestionEmpty = document.getElementById('suggestion-empty');
   const descriptionField = document.getElementById('description');
@@ -896,11 +897,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function updatePricePreview() {
-    if (!priceAmount) return;
     const serviceName = form.serviceNeeded.value;
     if (!serviceName) {
       currentPriceCents = null;
-      priceAmount.textContent = 'Select a service to see price.';
+      if (priceAmount) priceAmount.textContent = 'Select a service to see price.';
+      if (step1Price) step1Price.textContent = 'Select a service';
       if (suggestionGrid) {
         suggestionGrid.querySelectorAll('.suggestion-card').forEach((card) => {
           card.classList.remove('selected');
@@ -909,7 +910,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    priceAmount.textContent = 'Calculating...';
+    if (priceAmount) priceAmount.textContent = 'Calculating...';
+    if (step1Price) step1Price.textContent = 'Calculating...';
 
     try {
       const response = await fetch(`/api/service-price?service=${encodeURIComponent(serviceName)}`);
@@ -918,7 +920,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const result = await response.json();
       currentPriceCents = result.price_cents || null;
-      priceAmount.textContent = result.price || formatUsd(currentPriceCents);
+      const priceText = result.price || formatUsd(currentPriceCents);
+      if (priceAmount) priceAmount.textContent = priceText;
+      if (step1Price) step1Price.textContent = priceText;
       if (suggestionGrid) {
         suggestionGrid.querySelectorAll('.suggestion-card').forEach((card) => {
           const title = card.querySelector('.suggestion-card-title');
@@ -928,14 +932,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (error) {
       currentPriceCents = null;
-      priceAmount.textContent = 'Price unavailable';
+      if (priceAmount) priceAmount.textContent = 'Price unavailable';
+      if (step1Price) step1Price.textContent = 'Price unavailable';
     }
   }
 
   function resetPricePreview() {
-    if (!priceAmount) return;
     currentPriceCents = null;
-    priceAmount.textContent = 'Select a service to see price.';
+    if (priceAmount) priceAmount.textContent = 'Select a service to see price.';
+    if (step1Price) step1Price.textContent = 'Select a service';
     if (suggestionGrid) {
       suggestionGrid.querySelectorAll('.suggestion-card').forEach((card) => {
         card.classList.remove('selected');

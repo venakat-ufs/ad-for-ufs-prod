@@ -40,215 +40,102 @@ const supabase = createClient(
 );
 
 const SERVICE_OPTIONS = [
-  'Appliance Repairs',
-  'Automobile Removal',
-  'Bid-Approval',
-  'Cash for Keys',
-  'City Violation',
-  'Cleaning',
-  'Damage Restoration/ Diagnostics',
-  'Debris removal',
-  'De - Winterization',
-  'Discoloration Treatment/diagnostics',
-  'Drive-By- Inspection',
-  'Dry -Heat Winterization',
-  'Dry Sales Clean (no water or power)',
-  'Dry Winterization',
-  'Electrical',
-  'Electrical Diagnostics',
-  'Emergency Services',
-  'Estimate Debris- Trash -Out',
-  'Estimate Request',
-  'Eviction Process',
-  'Evection Per Man / Per Hour',
-  'Exterior Structure Removal',
-  'Exterior- Inspection',
-  'Fence Installation or Repair',
-  'Fencing',
-  'Fire Damage Repairs',
-  'Flooring',
-  'Flooring Repairs',
-  'Foundation/Structural',
-  'Garage Door',
-  'Garage Door Estimate',
-  'Garage Door Repair',
-  'General Repairs',
-  'Hazard Remediation',
-  'Hazardous Waste Removal',
-  'HOA Violation',
-  'HVAC',
-  'HVAC diagnostic',
-  'Initial Grass Cut',
-  'Initial Grass Cut -10,001 15,000 Sqft',
-  'Initial Grass Cut -15,001-20,000 Sqft',
-  'Initial Grass Cut -5000-10,000 Sqft',
-  'Initial Grass Cut -Perimeter Cut 10,000 Sqft',
-  'Initial Grass Cut 0 - 5000 sqft',
-  'Initial Janitorial Services',
-  'Interior / Exterior Debris Removal',
-  'Interior Inspection',
-  'Interior Inspection Service',
-  'Irrigation',
-  'Landscaping Estimate',
-  'Landscaping / Tree Service',
-  'Lock Change / Securing',
-  'Lock Change Rental Property',
-  'Lockbox',
-  'Loss Mitigation',
-  'Maintenance Service',
-  'Mold Remediation',
-  'Occupancy -inspection',
-  'Occupancy Verification',
-  'Ongoing Lawn Re-cuts',
-  'Ongoing Maintenance',
-  'Other',
-  'Painting',
-  'Painting and Wall Repairs',
+  // Plumbing
+  'Plumbing Diagnostic',
+  'Toilet Clog Removal',
+  'Drain Clog Clearing',
+  'Leak Stop / Emergency Water Shutoff',
+  'Water Heater Diagnostic',
+  // Electrical
+  'Electrical Diagnostic',
+  'Outlet / Switch Repair',
+  'Ceiling Light / Fixture Troubleshooting',
+  'Smoke / CO Detector Replacement',
+  // HVAC
+  'HVAC Diagnostic',
+  'Thermostat Replacement',
+  'HVAC Airflow / Filter Service',
+  // Appliances
+  'Appliance Diagnostic',
+  'Garbage Disposal Repair',
+  'Dishwasher Leak Check',
+  // Doors & Security
+  'Lock Rekey / Repair',
+  'Door Alignment Repair',
+  'Window / Sliding Door Repair',
+  // Water & Damage
+  'Leak Detection',
+  'Mold / Moisture Assessment',
+  // General Services
+  'Drywall Patch + Paint',
+  'Caulking / Sealing',
+  'Fence / Gate Repair',
   'Pest Control',
-  'Personal Property Storage / Removal',
-  'Plumbing',
-  'Plumbing Diagnostics',
-  'Pool and Spa Maintenance/Diagnostics',
-  'Pool Draining and Securing',
-  'Pre-Conveyance Inspection',
-  'Purchase',
-  'Radiant Winterization',
-  'Re-cut 0-5,000',
-  'Re-cut 10,000-15,000',
-  'Re-cut 15,001-25,000',
-  'Re-cut 5,001-10,000',
-  'Re-cut Perimeter',
-  'Recall',
-  'REO Lock Change Service',
-  'Repair Bid',
-  'Replacing Sump Pump',
-  'Restoration of Utility Services',
-  'Roof Diagnostics',
-  'Roof repiar',
-  'Roof Tarp',
-  'Roofing',
-  'Rural- Area Fee',
-  'Rush- Fee 12 to 24 hours',
-  'Sales -Clean',
-  'Septic System Maintenance/Diagnostics',
-  'Sewer Line',
-  'Sign Installation',
-  'Snow Removal',
-  'Steam Winterization',
-  'Tenant Turnover Services',
-  'Trash Out',
-  'Tree Removal',
-  'Tree Trimming',
-  'Vacant Property Registration',
-  'Vine Removal',
-  'Wet Winterization',
-  'Window Boarding',
-  'Window Replacement',
-  'Windows & Doors'
+  'Safety Hazard Check',
+  'Handyman - 1 Hour'
 ];
+
+// Service prices in cents
+const SERVICE_PRICES = {
+  'Plumbing Diagnostic': 17500,
+  'Toilet Clog Removal': 15000,
+  'Drain Clog Clearing': 17500,
+  'Leak Stop / Emergency Water Shutoff': 22500,
+  'Water Heater Diagnostic': 19500,
+  'Electrical Diagnostic': 18500,
+  'Outlet / Switch Repair': 16000,
+  'Ceiling Light / Fixture Troubleshooting': 17500,
+  'Smoke / CO Detector Replacement': 12500,
+  'HVAC Diagnostic': 22500,
+  'Thermostat Replacement': 19500,
+  'HVAC Airflow / Filter Service': 14500,
+  'Appliance Diagnostic': 19500,
+  'Garbage Disposal Repair': 16500,
+  'Dishwasher Leak Check': 18500,
+  'Lock Rekey / Repair': 16000,
+  'Door Alignment Repair': 17500,
+  'Window / Sliding Door Repair': 18500,
+  'Leak Detection': 27500,
+  'Mold / Moisture Assessment': 32500,
+  'Drywall Patch + Paint': 27500,
+  'Caulking / Sealing': 16500,
+  'Fence / Gate Repair': 25000,
+  'Pest Control': 19500,
+  'Safety Hazard Check': 22500,
+  'Handyman - 1 Hour': 16000
+};
 const SERVICE_MAP = new Map(
   SERVICE_OPTIONS.map((option) => [normalizeServiceName(option), option])
 );
 
 const SUGGESTION_SYSTEM_PROMPT = [
-  'You are a service matcher. Return ALL services from the list that match the user description.',
-  'STRICT RULES:',
-  '- NO LIMIT on number of suggestions - return ALL relevant services.',
-  '- If 6 grass cut options match, return all 6. If 10 services match, return all 10.',
-  '- Include all size/type variants (e.g., all "Initial Grass Cut" sizes when user mentions grass/lawn).',
-  '- NEVER pad with unrelated services - only return genuine matches.',
-  '- Use exact service names from the provided list.',
-  '- Only include "Emergency Services" or "Damage Restoration/ Diagnostics" when explicitly urgent/hazardous.',
-  'Respond with JSON: {"suggestions":["Service A","Service B",...]} - include ALL relevant matches from the list.'
+  'You are a property maintenance service matcher. Match user descriptions to the correct service.',
+  'AVAILABLE SERVICES:',
+  'Plumbing: Plumbing Diagnostic ($175), Toilet Clog Removal ($150), Drain Clog Clearing ($175), Leak Stop / Emergency Water Shutoff ($225), Water Heater Diagnostic ($195)',
+  'Electrical: Electrical Diagnostic ($185), Outlet / Switch Repair ($160), Ceiling Light / Fixture Troubleshooting ($175), Smoke / CO Detector Replacement ($125)',
+  'HVAC: HVAC Diagnostic ($225), Thermostat Replacement ($195), HVAC Airflow / Filter Service ($145)',
+  'Appliances: Appliance Diagnostic ($195), Garbage Disposal Repair ($165), Dishwasher Leak Check ($185)',
+  'Doors & Security: Lock Rekey / Repair ($160), Door Alignment Repair ($175), Window / Sliding Door Repair ($185)',
+  'Water & Damage: Leak Detection ($275), Mold / Moisture Assessment ($325)',
+  'General: Drywall Patch + Paint ($275), Caulking / Sealing ($165), Fence / Gate Repair ($250), Pest Control ($195), Safety Hazard Check ($225), Handyman - 1 Hour ($160)',
+  'RULES:',
+  '- If water is actively leaking/spraying → Leak Stop / Emergency Water Shutoff',
+  '- If water stain/wet wall/moisture → Leak Detection',
+  '- If unclear issue → recommend the Diagnostic service for that category',
+  '- Return 1-3 most relevant services only',
+  'Respond with JSON: {"suggestions":["Service A","Service B"]}'
 ].join(' ');
 
-const PRICE_FALLBACK_CENTS = 19900;
+const PRICE_FALLBACK_CENTS = 19500;
 
 function getServicePriceCents(serviceName) {
   const value = String(serviceName || '').trim();
   if (!value) return null;
-  const lower = value.toLowerCase();
 
-  const grassPrice = priceForGrassService(value);
-  if (grassPrice) return grassPrice;
-
-  if (lower.includes('emergency services')) return 35000;
-  if (lower.includes('damage restoration')) return 45000;
-  if (lower.includes('hazardous waste') || lower.includes('hazard remediation')) return 40000;
-  if (lower.includes('mold remediation')) return 45000;
-  if (lower.includes('fire damage')) return 45000;
-
-  if (lower.includes('roof tarp')) return 25000;
-  if (lower.includes('roof diagnostic')) return 20000;
-  if (lower.includes('roof repiar') || lower.includes('roofing')) return 40000;
-  if (lower.includes('roof')) return 35000;
-
-  if (lower.includes('hvac diagnostic')) return 20000;
-  if (lower.includes('hvac')) return 25000;
-
-  if (lower.includes('plumbing diagnostics')) return 20000;
-  if (lower.includes('plumbing')) return 22000;
-
-  if (lower.includes('electrical diagnostics')) return 20000;
-  if (lower.includes('electrical')) return 22000;
-
-  if (lower.includes('garage door estimate')) return 12000;
-  if (lower.includes('garage door repair')) return 25000;
-  if (lower.includes('garage door')) return 22000;
-
-  if (lower.includes('window boarding')) return 25000;
-  if (lower.includes('window replacement')) return 45000;
-  if (lower.includes('windows & doors')) return 40000;
-
-  if (lower.includes('fence')) return 28000;
-  if (lower.includes('fencing')) return 28000;
-
-  if (lower.includes('tree removal')) return 35000;
-  if (lower.includes('tree trimming')) return 18000;
-
-  if (lower.includes('estimate debris')) return 12000;
-  if (lower.includes('trash out') || lower.includes('debris')) return 22000;
-
-  if (lower.includes('clean')) return 18000;
-
-  if (lower.includes('landscaping')) return 22000;
-  if (lower.includes('irrigation')) return 20000;
-
-  if (lower.includes('lock change') || lower.includes('securing') || lower.includes('lockbox')) return 15000;
-
-  if (lower.includes('pool')) return 26000;
-
-  if (lower.includes('septic')) return 30000;
-  if (lower.includes('sewer line')) return 30000;
-
-  if (lower.includes('pest control')) return 18000;
-
-  if (lower.includes('painting')) return 28000;
-
-  if (lower.includes('flooring')) return 28000;
-
-  if (lower.includes('foundation/structural')) return 40000;
-
-  if (lower.includes('appliance')) return 18000;
-
-  if (lower.includes('snow removal')) return 16000;
-
-  if (lower.includes('sign installation')) return 15000;
-
-  if (lower.includes('vacant property')) return 12000;
-  if (lower.includes('city violation') || lower.includes('hoa violation')) return 15000;
-
-  if (lower.includes('estimate request') || lower.includes('estimate')) return 9900;
-  if (lower.includes('inspection')) return 9900;
-
-  if (lower.includes('rush- fee')) return 12000;
-  if (lower.includes('rural- area fee')) return 15000;
-
-  if (lower.includes('maintenance service') || lower.includes('ongoing maintenance') || lower.includes('general repairs')) {
-    return 20000;
+  // Direct lookup from SERVICE_PRICES
+  if (SERVICE_PRICES[value]) {
+    return SERVICE_PRICES[value];
   }
-
-  if (lower.includes('purchase')) return 15000;
 
   return PRICE_FALLBACK_CENTS;
 }
@@ -339,46 +226,6 @@ async function lookupZipWithOpenAi({ zip, city, state, country }) {
   const data = await response.json();
   const rawContent = data?.choices?.[0]?.message?.content?.trim() || '';
   return parseOpenAiZipResponse(rawContent);
-}
-
-function priceForGrassService(serviceName) {
-  const lower = serviceName.toLowerCase();
-  const isGrassService =
-    lower.includes('grass cut') ||
-    lower.includes('re-cut') ||
-    lower.includes('lawn');
-  if (!isGrassService) return null;
-
-  if (lower.includes('perimeter')) return 14000;
-  if (lower.includes('ongoing lawn re-cuts')) return 14000;
-
-  const maxSqft = extractMaxSqft(serviceName);
-  let price = 15000;
-
-  if (maxSqft !== null) {
-    if (maxSqft <= 5000) price = 12000;
-    else if (maxSqft <= 10000) price = 15000;
-    else if (maxSqft <= 15000) price = 18000;
-    else if (maxSqft <= 20000) price = 22000;
-    else if (maxSqft <= 25000) price = 26000;
-    else price = 30000;
-  }
-
-  if (lower.includes('re-cut')) {
-    price = Math.round(price * 0.75);
-  }
-
-  return price;
-}
-
-function extractMaxSqft(serviceName) {
-  const matches = String(serviceName).match(/(\d[\d,]*)/g);
-  if (!matches) return null;
-  const numbers = matches
-    .map((value) => parseInt(value.replace(/,/g, ''), 10))
-    .filter((value) => Number.isFinite(value));
-  if (!numbers.length) return null;
-  return Math.max(...numbers);
 }
 
 function formatUsd(cents) {
