@@ -108,23 +108,46 @@ const SERVICE_MAP = new Map(
   SERVICE_OPTIONS.map((option) => [normalizeServiceName(option), option])
 );
 
-const SUGGESTION_SYSTEM_PROMPT = [
-  'You are a property maintenance service matcher. Match user descriptions to the correct service.',
-  'AVAILABLE SERVICES:',
-  'Plumbing: Plumbing Diagnostic ($175), Toilet Clog Removal ($150), Drain Clog Clearing ($175), Leak Stop / Emergency Water Shutoff ($225), Water Heater Diagnostic ($195)',
-  'Electrical: Electrical Diagnostic ($185), Outlet / Switch Repair ($160), Ceiling Light / Fixture Troubleshooting ($175), Smoke / CO Detector Replacement ($125)',
-  'HVAC: HVAC Diagnostic ($225), Thermostat Replacement ($195), HVAC Airflow / Filter Service ($145)',
-  'Appliances: Appliance Diagnostic ($195), Garbage Disposal Repair ($165), Dishwasher Leak Check ($185)',
-  'Doors & Security: Lock Rekey / Repair ($160), Door Alignment Repair ($175), Window / Sliding Door Repair ($185)',
-  'Water & Damage: Leak Detection ($275), Mold / Moisture Assessment ($325)',
-  'General: Drywall Patch + Paint ($275), Caulking / Sealing ($165), Fence / Gate Repair ($250), Pest Control ($195), Safety Hazard Check ($225), Handyman - 1 Hour ($160)',
-  'RULES:',
-  '- If water is actively leaking/spraying → Leak Stop / Emergency Water Shutoff',
-  '- If water stain/wet wall/moisture → Leak Detection',
-  '- If unclear issue → recommend the Diagnostic service for that category',
-  '- Return 1-3 most relevant services only',
-  'Respond with JSON: {"suggestions":["Service A","Service B"]}'
-].join(' ');
+const SUGGESTION_SYSTEM_PROMPT = `You are a property maintenance service matcher. Match user descriptions to the EXACT service names from this list:
+
+SERVICES (use these EXACT names):
+- Plumbing Diagnostic
+- Toilet Clog Removal
+- Drain Clog Clearing
+- Leak Stop / Emergency Water Shutoff
+- Water Heater Diagnostic
+- Electrical Diagnostic
+- Outlet / Switch Repair
+- Ceiling Light / Fixture Troubleshooting
+- Smoke / CO Detector Replacement
+- HVAC Diagnostic
+- Thermostat Replacement
+- HVAC Airflow / Filter Service
+- Appliance Diagnostic
+- Garbage Disposal Repair
+- Dishwasher Leak Check
+- Lock Rekey / Repair
+- Door Alignment Repair
+- Window / Sliding Door Repair
+- Leak Detection
+- Mold / Moisture Assessment
+- Drywall Patch + Paint
+- Caulking / Sealing
+- Fence / Gate Repair
+- Pest Control
+- Safety Hazard Check
+- Handyman - 1 Hour
+
+RULES:
+- Return 1-3 services that best match the description
+- Use EXACT service names from the list above
+- For light/fixture issues → Ceiling Light / Fixture Troubleshooting
+- For electrical outlets/switches → Outlet / Switch Repair
+- For unclear electrical issues → Electrical Diagnostic
+- For active water leak/flooding → Leak Stop / Emergency Water Shutoff
+- For water stains/moisture → Leak Detection
+
+Respond with JSON only: {"suggestions":["Exact Service Name 1","Exact Service Name 2"]}`;
 
 const PRICE_FALLBACK_CENTS = 19500;
 
@@ -1191,10 +1214,48 @@ function buildSuggestionList(rawSuggestions) {
 
   rawSuggestions.forEach((item) => {
     const normalized = normalizeServiceName(item);
-    const exact = SERVICE_MAP.get(normalized);
-    if (!exact || seen.has(exact)) return;
-    seen.add(exact);
-    results.push(exact);
+
+    // Try exact match first
+    let match = SERVICE_MAP.get(normalized);
+
+    // If no exact match, try partial matching
+    if (!match) {
+      for (const [key, value] of SERVICE_MAP.entries()) {
+        if (key.includes(normalized) || normalized.includes(key)) {
+          match = value;
+          break;
+        }
+      }
+    }
+
+    // If still no match, try finding service that contains key words
+    if (!match) {
+      const itemLower = item.toLowerCase();
+      for (const service of SERVICE_OPTIONS) {
+        const serviceLower = service.toLowerCase();
+        // Check if key words match
+        if (itemLower.includes('light') && serviceLower.includes('light')) {
+          match = service;
+          break;
+        }
+        if (itemLower.includes('electrical') && serviceLower.includes('electrical')) {
+          match = service;
+          break;
+        }
+        if (itemLower.includes('plumbing') && serviceLower.includes('plumbing')) {
+          match = service;
+          break;
+        }
+        if (itemLower.includes('hvac') && serviceLower.includes('hvac')) {
+          match = service;
+          break;
+        }
+      }
+    }
+
+    if (!match || seen.has(match)) return;
+    seen.add(match);
+    results.push(match);
   });
 
   return results.slice(0, 5);

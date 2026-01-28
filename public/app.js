@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const suggestionModalClose = document.getElementById('suggestion-modal-close');
   const payBtn = document.getElementById('pay-btn');
   const priceAmount = document.getElementById('price-amount');
-  const step1Price = document.getElementById('step1-price');
   const suggestionGrid = document.getElementById('suggestion-grid');
   const suggestionEmpty = document.getElementById('suggestion-empty');
   const descriptionField = document.getElementById('description');
@@ -901,7 +900,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!serviceName) {
       currentPriceCents = null;
       if (priceAmount) priceAmount.textContent = 'Select a service to see price.';
-      if (step1Price) step1Price.textContent = 'Select a service';
       if (suggestionGrid) {
         suggestionGrid.querySelectorAll('.suggestion-card').forEach((card) => {
           card.classList.remove('selected');
@@ -911,7 +909,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (priceAmount) priceAmount.textContent = 'Calculating...';
-    if (step1Price) step1Price.textContent = 'Calculating...';
 
     try {
       const response = await fetch(`/api/service-price?service=${encodeURIComponent(serviceName)}`);
@@ -922,7 +919,6 @@ document.addEventListener('DOMContentLoaded', () => {
       currentPriceCents = result.price_cents || null;
       const priceText = result.price || formatUsd(currentPriceCents);
       if (priceAmount) priceAmount.textContent = priceText;
-      if (step1Price) step1Price.textContent = priceText;
       if (suggestionGrid) {
         suggestionGrid.querySelectorAll('.suggestion-card').forEach((card) => {
           const title = card.querySelector('.suggestion-card-title');
@@ -933,14 +929,12 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       currentPriceCents = null;
       if (priceAmount) priceAmount.textContent = 'Price unavailable';
-      if (step1Price) step1Price.textContent = 'Price unavailable';
     }
   }
 
   function resetPricePreview() {
     currentPriceCents = null;
     if (priceAmount) priceAmount.textContent = 'Select a service to see price.';
-    if (step1Price) step1Price.textContent = 'Select a service';
     if (suggestionGrid) {
       suggestionGrid.querySelectorAll('.suggestion-card').forEach((card) => {
         card.classList.remove('selected');
