@@ -48,61 +48,144 @@ const SERVICE_OPTIONS = [
   'Water Heater Diagnostic',
   // Electrical
   'Electrical Diagnostic',
-  'Outlet / Switch Repair',
-  'Ceiling Light / Fixture Troubleshooting',
-  'Smoke / CO Detector Replacement',
+  'Outlet or Switch Replacement',
+  'Smoke or CO Detector Replacement',
+  'GFCI Outlet Test & Replacement',
   // HVAC
   'HVAC Diagnostic',
   'Thermostat Replacement',
-  'HVAC Airflow / Filter Service',
+  'HVAC Filter Replacement',
   // Appliances
   'Appliance Diagnostic',
-  'Garbage Disposal Repair',
-  'Dishwasher Leak Check',
+  'Garbage Disposal Jam',
+  'Dishwasher Not Draining / Leak Check',
   // Doors & Security
-  'Lock Rekey / Repair',
-  'Door Alignment Repair',
-  'Window / Sliding Door Repair',
-  // Water & Damage
-  'Leak Detection',
-  'Mold / Moisture Assessment',
+  'Lock Rekey or Lock Repair',
+  'Door Adjustment / Alignment',
+  'Deadbolt Installation',
   // General Services
-  'Drywall Patch + Paint',
-  'Caulking / Sealing',
-  'Fence / Gate Repair',
-  'Pest Control',
-  'Safety Hazard Check',
-  'Handyman - 1 Hour'
+  'Caulking Repair',
+  'Pest Control Visit',
+  'Handyman - 1 Hour',
+  'Repair Bid / Estimate'
 ];
 
 // Service prices in cents
 const SERVICE_PRICES = {
   'Plumbing Diagnostic': 17500,
-  'Toilet Clog Removal': 15000,
-  'Drain Clog Clearing': 17500,
+  'Toilet Clog Removal': 39500,
+  'Drain Clog Clearing': 35000,
   'Leak Stop / Emergency Water Shutoff': 22500,
-  'Water Heater Diagnostic': 19500,
-  'Electrical Diagnostic': 18500,
-  'Outlet / Switch Repair': 16000,
-  'Ceiling Light / Fixture Troubleshooting': 17500,
-  'Smoke / CO Detector Replacement': 12500,
-  'HVAC Diagnostic': 22500,
-  'Thermostat Replacement': 19500,
-  'HVAC Airflow / Filter Service': 14500,
-  'Appliance Diagnostic': 19500,
-  'Garbage Disposal Repair': 16500,
-  'Dishwasher Leak Check': 18500,
-  'Lock Rekey / Repair': 16000,
-  'Door Alignment Repair': 17500,
-  'Window / Sliding Door Repair': 18500,
-  'Leak Detection': 27500,
-  'Mold / Moisture Assessment': 32500,
-  'Drywall Patch + Paint': 27500,
-  'Caulking / Sealing': 16500,
-  'Fence / Gate Repair': 25000,
-  'Pest Control': 19500,
-  'Safety Hazard Check': 22500,
-  'Handyman - 1 Hour': 16000
+  'Water Heater Diagnostic': 17500,
+  'Electrical Diagnostic': 29500,
+  'Outlet or Switch Replacement': 29500,
+  'Smoke or CO Detector Replacement': 29500,
+  'GFCI Outlet Test & Replacement': 29500,
+  'HVAC Diagnostic': 17500,
+  'Thermostat Replacement': 49500,
+  'HVAC Filter Replacement': 16500,
+  'Appliance Diagnostic': 16500,
+  'Garbage Disposal Jam': 19900,
+  'Dishwasher Not Draining / Leak Check': 18500,
+  'Lock Rekey or Lock Repair': 16000,
+  'Door Adjustment / Alignment': 19500,
+  'Deadbolt Installation': 29500,
+  'Caulking Repair': 29900,
+  'Pest Control Visit': 39900,
+  'Handyman - 1 Hour': 16000,
+  'Repair Bid / Estimate': 19500
+};
+
+// Service descriptions for tooltips
+const SERVICE_DESCRIPTIONS = {
+  'Plumbing Diagnostic': {
+    bestFor: 'Identifying the source of leaks, clogs, or water pressure issues',
+    description: 'A professional assessment to diagnose plumbing problems and recommend the appropriate repair'
+  },
+  'Toilet Clog Removal': {
+    bestFor: 'Stubborn clogs that a plunger can\'t clear',
+    description: 'Professional clearing of toilet blockages using specialized tools'
+  },
+  'Drain Clog Clearing': {
+    bestFor: 'Slow or blocked drains in sinks, showers, or tubs',
+    description: 'Clearing of drain blockages to restore proper water flow'
+  },
+  'Leak Stop / Emergency Water Shutoff': {
+    bestFor: 'Active leaks or situations requiring immediate water shutoff',
+    description: 'Emergency response to stop water flow and prevent further damage'
+  },
+  'Water Heater Diagnostic': {
+    bestFor: 'No hot water, inconsistent temperature, or unusual noises',
+    description: 'Assessment of water heater issues to determine repair or replacement needs'
+  },
+  'Electrical Diagnostic': {
+    bestFor: 'Circuit issues, flickering lights, or electrical troubleshooting',
+    description: 'Professional evaluation of electrical problems to identify root causes'
+  },
+  'Outlet or Switch Replacement': {
+    bestFor: 'Non-working outlets, damaged switches, or upgrade needs',
+    description: 'Replacement of faulty or outdated electrical outlets and switches'
+  },
+  'Smoke or CO Detector Replacement': {
+    bestFor: 'Expired, malfunctioning, or missing detectors',
+    description: 'Installation of new smoke or carbon monoxide detectors for safety compliance'
+  },
+  'GFCI Outlet Test & Replacement': {
+    bestFor: 'Kitchen, bathroom, or outdoor outlets requiring GFCI protection',
+    description: 'Testing and replacement of ground fault circuit interrupter outlets'
+  },
+  'HVAC Diagnostic': {
+    bestFor: 'Heating or cooling not working properly',
+    description: 'Assessment of HVAC system issues to determine repair needs'
+  },
+  'Thermostat Replacement': {
+    bestFor: 'Upgrading to smart thermostat or replacing faulty unit',
+    description: 'Removal of old thermostat and installation of new unit'
+  },
+  'HVAC Filter Replacement': {
+    bestFor: 'Regular maintenance or restricted airflow',
+    description: 'Replacement of HVAC air filters to maintain system efficiency'
+  },
+  'Appliance Diagnostic': {
+    bestFor: 'Appliance not working or performing poorly',
+    description: 'Professional assessment of appliance issues and repair recommendations'
+  },
+  'Garbage Disposal Jam': {
+    bestFor: 'Disposal not running, humming, or making grinding noises',
+    description: 'Clearing jams and restoring garbage disposal function'
+  },
+  'Dishwasher Not Draining / Leak Check': {
+    bestFor: 'Standing water in dishwasher or visible leaks',
+    description: 'Diagnosis and repair of dishwasher drainage or leak issues'
+  },
+  'Lock Rekey or Lock Repair': {
+    bestFor: 'New tenant move-in, lost keys, or sticky locks',
+    description: 'Rekeying existing locks or repairing lock mechanisms'
+  },
+  'Door Adjustment / Alignment': {
+    bestFor: 'Doors that stick, don\'t latch, or have gaps',
+    description: 'Adjustment of door hinges, strikes, and frames for proper operation'
+  },
+  'Deadbolt Installation': {
+    bestFor: 'Adding security or replacing damaged deadbolt',
+    description: 'Professional installation of new deadbolt lock'
+  },
+  'Caulking Repair': {
+    bestFor: 'Cracked or missing caulk around tubs, showers, or windows',
+    description: 'Removal of old caulk and application of new sealant'
+  },
+  'Pest Control Visit': {
+    bestFor: 'Insect or rodent activity in or around property',
+    description: 'Professional pest treatment and prevention service'
+  },
+  'Handyman - 1 Hour': {
+    bestFor: 'Small repairs, installations, or general maintenance tasks',
+    description: 'One hour of general handyman service for various property needs'
+  },
+  'Repair Bid / Estimate': {
+    bestFor: 'Large projects requiring detailed scope and pricing',
+    description: 'On-site assessment and written estimate for repair work. Fee credited if repair proceeds.'
+  }
 };
 const SERVICE_MAP = new Map(
   SERVICE_OPTIONS.map((option) => [normalizeServiceName(option), option])
@@ -117,35 +200,36 @@ SERVICES (use these EXACT names):
 - Leak Stop / Emergency Water Shutoff
 - Water Heater Diagnostic
 - Electrical Diagnostic
-- Outlet / Switch Repair
-- Ceiling Light / Fixture Troubleshooting
-- Smoke / CO Detector Replacement
+- Outlet or Switch Replacement
+- Smoke or CO Detector Replacement
+- GFCI Outlet Test & Replacement
 - HVAC Diagnostic
 - Thermostat Replacement
-- HVAC Airflow / Filter Service
+- HVAC Filter Replacement
 - Appliance Diagnostic
-- Garbage Disposal Repair
-- Dishwasher Leak Check
-- Lock Rekey / Repair
-- Door Alignment Repair
-- Window / Sliding Door Repair
-- Leak Detection
-- Mold / Moisture Assessment
-- Drywall Patch + Paint
-- Caulking / Sealing
-- Fence / Gate Repair
-- Pest Control
-- Safety Hazard Check
+- Garbage Disposal Jam
+- Dishwasher Not Draining / Leak Check
+- Lock Rekey or Lock Repair
+- Door Adjustment / Alignment
+- Deadbolt Installation
+- Caulking Repair
+- Pest Control Visit
 - Handyman - 1 Hour
+- Repair Bid / Estimate
 
 RULES:
 - Return 1-3 services that best match the description
 - Use EXACT service names from the list above
-- For light/fixture issues → Ceiling Light / Fixture Troubleshooting
-- For electrical outlets/switches → Outlet / Switch Repair
+- For light/fixture/flickering issues → Electrical Diagnostic
+- For electrical outlets/switches not working → Outlet or Switch Replacement
 - For unclear electrical issues → Electrical Diagnostic
 - For active water leak/flooding → Leak Stop / Emergency Water Shutoff
-- For water stains/moisture → Leak Detection
+- For no hot water → Water Heater Diagnostic
+- For HVAC/heating/cooling issues → HVAC Diagnostic
+- For bugs/insects/rodents → Pest Control Visit
+- For lock issues or new tenant → Lock Rekey or Lock Repair
+- For general small repairs → Handyman - 1 Hour
+- For large projects needing estimate → Repair Bid / Estimate
 
 Respond with JSON only: {"suggestions":["Exact Service Name 1","Exact Service Name 2"]}`;
 
@@ -513,6 +597,10 @@ app.get('/api/service-price', (req, res) => {
     price_cents: priceCents,
     price: formatUsd(priceCents)
   });
+});
+
+app.get('/api/service-descriptions', (_req, res) => {
+  res.json({ success: true, descriptions: SERVICE_DESCRIPTIONS });
 });
 
 app.get('/api/maps-config', (req, res) => {
@@ -1234,11 +1322,11 @@ function buildSuggestionList(rawSuggestions) {
       for (const service of SERVICE_OPTIONS) {
         const serviceLower = service.toLowerCase();
         // Check if key words match
-        if (itemLower.includes('light') && serviceLower.includes('light')) {
+        if ((itemLower.includes('light') || itemLower.includes('electrical') || itemLower.includes('flickering')) && serviceLower.includes('electrical')) {
           match = service;
           break;
         }
-        if (itemLower.includes('electrical') && serviceLower.includes('electrical')) {
+        if ((itemLower.includes('outlet') || itemLower.includes('switch')) && serviceLower.includes('outlet')) {
           match = service;
           break;
         }
@@ -1247,6 +1335,14 @@ function buildSuggestionList(rawSuggestions) {
           break;
         }
         if (itemLower.includes('hvac') && serviceLower.includes('hvac')) {
+          match = service;
+          break;
+        }
+        if ((itemLower.includes('pest') || itemLower.includes('bug') || itemLower.includes('rodent')) && serviceLower.includes('pest')) {
+          match = service;
+          break;
+        }
+        if ((itemLower.includes('lock') || itemLower.includes('key')) && serviceLower.includes('lock')) {
           match = service;
           break;
         }

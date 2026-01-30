@@ -98,37 +98,49 @@
             <p class="panel-hint suggestion-empty hidden" id="suggestion-empty">We will show recommended services automatically.</p>
             <div class="suggestion-grid hidden" id="suggestion-grid"></div>
             <div class="form-group client-only" data-field="serviceNeeded">
-              <label for="serviceNeeded">Service Needed*</label>
+              <label for="serviceNeeded">Service Needed* <button type="button" class="info-btn" id="service-info-btn" aria-label="Service information">&#9432;</button></label>
               <select id="serviceNeeded" name="serviceNeeded">
                 <option value="">Select a service</option>
                 <option value="Plumbing Diagnostic">Plumbing Diagnostic - $175</option>
-                <option value="Toilet Clog Removal">Toilet Clog Removal - $150</option>
-                <option value="Drain Clog Clearing">Drain Clog Clearing - $175</option>
+                <option value="Toilet Clog Removal">Toilet Clog Removal - $395</option>
+                <option value="Drain Clog Clearing">Drain Clog Clearing - $350</option>
                 <option value="Leak Stop / Emergency Water Shutoff">Leak Stop / Emergency Water Shutoff - $225</option>
-                <option value="Water Heater Diagnostic">Water Heater Diagnostic - $195</option>
-                <option value="Electrical Diagnostic">Electrical Diagnostic - $185</option>
-                <option value="Outlet / Switch Repair">Outlet / Switch Repair - $160</option>
-                <option value="Ceiling Light / Fixture Troubleshooting">Ceiling Light / Fixture Troubleshooting - $175</option>
-                <option value="Smoke / CO Detector Replacement">Smoke / CO Detector Replacement - $125</option>
-                <option value="HVAC Diagnostic">HVAC Diagnostic - $225</option>
-                <option value="Thermostat Replacement">Thermostat Replacement - $195</option>
-                <option value="HVAC Airflow / Filter Service">HVAC Airflow / Filter Service - $145</option>
-                <option value="Appliance Diagnostic">Appliance Diagnostic - $195</option>
-                <option value="Garbage Disposal Repair">Garbage Disposal Repair - $165</option>
-                <option value="Dishwasher Leak Check">Dishwasher Leak Check - $185</option>
-                <option value="Lock Rekey / Repair">Lock Rekey / Repair - $160</option>
-                <option value="Door Alignment Repair">Door Alignment Repair - $175</option>
-                <option value="Window / Sliding Door Repair">Window / Sliding Door Repair - $185</option>
-                <option value="Leak Detection">Leak Detection - $275</option>
-                <option value="Mold / Moisture Assessment">Mold / Moisture Assessment - $325</option>
-                <option value="Drywall Patch + Paint">Drywall Patch + Paint - $275</option>
-                <option value="Caulking / Sealing">Caulking / Sealing - $165</option>
-                <option value="Fence / Gate Repair">Fence / Gate Repair - $250</option>
-                <option value="Pest Control">Pest Control - $195</option>
-                <option value="Safety Hazard Check">Safety Hazard Check - $225</option>
+                <option value="Water Heater Diagnostic">Water Heater Diagnostic - $175</option>
+                <option value="Electrical Diagnostic">Electrical Diagnostic - $295</option>
+                <option value="Outlet or Switch Replacement">Outlet or Switch Replacement - $295</option>
+                <option value="Smoke or CO Detector Replacement">Smoke or CO Detector Replacement - $295</option>
+                <option value="GFCI Outlet Test & Replacement">GFCI Outlet Test & Replacement - $295</option>
+                <option value="HVAC Diagnostic">HVAC Diagnostic - $175</option>
+                <option value="Thermostat Replacement">Thermostat Replacement - $495</option>
+                <option value="HVAC Filter Replacement">HVAC Filter Replacement - $165</option>
+                <option value="Appliance Diagnostic">Appliance Diagnostic - $165</option>
+                <option value="Garbage Disposal Jam">Garbage Disposal Jam - $199</option>
+                <option value="Dishwasher Not Draining / Leak Check">Dishwasher Not Draining / Leak Check - $185</option>
+                <option value="Lock Rekey or Lock Repair">Lock Rekey or Lock Repair - $160</option>
+                <option value="Door Adjustment / Alignment">Door Adjustment / Alignment - $195</option>
+                <option value="Deadbolt Installation">Deadbolt Installation - $295</option>
+                <option value="Caulking Repair">Caulking Repair - $299</option>
+                <option value="Pest Control Visit">Pest Control Visit - $399</option>
                 <option value="Handyman - 1 Hour">Handyman - 1 Hour - $160</option>
+                <option value="Repair Bid / Estimate">Repair Bid / Estimate - $195</option>
               </select>
               <small class="error"></small>
+              <div class="service-tooltip hidden" id="service-tooltip">
+                <div class="tooltip-header">
+                  <span class="tooltip-title" id="tooltip-title">Service Details</span>
+                  <button type="button" class="tooltip-close" id="tooltip-close">&times;</button>
+                </div>
+                <div class="tooltip-content">
+                  <div class="tooltip-row">
+                    <span class="tooltip-label">Best for:</span>
+                    <span class="tooltip-value" id="tooltip-bestfor">-</span>
+                  </div>
+                  <div class="tooltip-row">
+                    <span class="tooltip-label">Description:</span>
+                    <span class="tooltip-value" id="tooltip-description">-</span>
+                  </div>
+                </div>
+              </div>
             </div>
             <p class="panel-hint">Not Seeing What You Need? Use The Service List To Change Manually</p>
             <div class="stage-actions">
@@ -277,9 +289,16 @@
                 <span class="price-note">Cards &amp; wallets (USD)</span>
               </div>
             </div>
+
+            <div class="tc-notice">
+              <div class="tc-icon">&#9432;</div>
+              <div class="tc-text">
+                <strong>Important Notice:</strong> If additional issues are identified on site, we will contact you by call or text for approval before proceeding. No additional work will be performed without your authorization.
+              </div>
+            </div>
+
             <div class="form-footer">
               <button type="button" class="ghost-btn" id="back-button">Back</button>
-              <button type="submit" class="ghost-btn" id="submit-btn">Submit lead</button>
               <button type="button" class="primary-btn" id="pay-btn">Book &amp; Pay</button>
             </div>
           </section>

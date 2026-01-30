@@ -388,8 +388,79 @@ document.addEventListener('DOMContentLoaded', () => {
   if (form.serviceNeeded) {
     form.serviceNeeded.addEventListener('change', () => {
       updatePricePreview();
+      updateServiceTooltip();
     });
   }
+
+  // Service info tooltip functionality
+  const serviceInfoBtn = document.getElementById('service-info-btn');
+  const serviceTooltip = document.getElementById('service-tooltip');
+  const tooltipClose = document.getElementById('tooltip-close');
+  const tooltipTitle = document.getElementById('tooltip-title');
+  const tooltipBestFor = document.getElementById('tooltip-bestfor');
+  const tooltipDescription = document.getElementById('tooltip-description');
+  let serviceDescriptions = {};
+
+  // Fetch service descriptions on load
+  async function loadServiceDescriptions() {
+    try {
+      const response = await fetch('/api/service-descriptions');
+      const data = await response.json();
+      if (data.success) {
+        serviceDescriptions = data.descriptions;
+      }
+    } catch (error) {
+      console.error('Failed to load service descriptions:', error);
+    }
+  }
+  loadServiceDescriptions();
+
+  function updateServiceTooltip() {
+    const selectedService = form.serviceNeeded?.value;
+    if (!selectedService || !serviceDescriptions[selectedService]) {
+      if (serviceTooltip) serviceTooltip.classList.add('hidden');
+      return;
+    }
+    const info = serviceDescriptions[selectedService];
+    if (tooltipTitle) tooltipTitle.textContent = selectedService;
+    if (tooltipBestFor) tooltipBestFor.textContent = info.bestFor || '-';
+    if (tooltipDescription) tooltipDescription.textContent = info.description || '-';
+  }
+
+  function toggleServiceTooltip() {
+    if (!serviceTooltip) return;
+    const selectedService = form.serviceNeeded?.value;
+    if (!selectedService || !serviceDescriptions[selectedService]) {
+      serviceTooltip.classList.add('hidden');
+      return;
+    }
+    updateServiceTooltip();
+    serviceTooltip.classList.toggle('hidden');
+  }
+
+  if (serviceInfoBtn) {
+    serviceInfoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleServiceTooltip();
+    });
+  }
+
+  if (tooltipClose) {
+    tooltipClose.addEventListener('click', () => {
+      if (serviceTooltip) serviceTooltip.classList.add('hidden');
+    });
+  }
+
+  // Close tooltip when clicking outside
+  document.addEventListener('click', (e) => {
+    if (serviceTooltip && !serviceTooltip.classList.contains('hidden')) {
+      const isClickInside = serviceTooltip.contains(e.target) || serviceInfoBtn?.contains(e.target);
+      if (!isClickInside) {
+        serviceTooltip.classList.add('hidden');
+      }
+    }
+  });
 
   if (payBtn) {
     payBtn.addEventListener('click', () => {

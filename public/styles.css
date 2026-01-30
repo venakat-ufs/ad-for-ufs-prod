@@ -448,6 +448,8 @@ h3 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .suggestion-card {
@@ -461,6 +463,8 @@ h3 {
   flex-direction: column;
   gap: 6px;
   transition: border-color 0.15s ease, background-color 0.15s ease;
+  overflow: hidden;
+  min-width: 0;
 }
 
 .suggestion-card:hover {
@@ -477,6 +481,8 @@ h3 {
 .suggestion-card-title {
   font-weight: 700;
   font-size: 13px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .suggestion-card-price {
@@ -1266,4 +1272,149 @@ textarea {
   border-color: var(--primary);
   background: var(--primary);
   color: var(--white);
+}
+
+/* Info Button & Service Tooltip */
+.info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--muted-light);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.info-btn:hover {
+  background: var(--primary);
+  transform: scale(1.1);
+}
+
+.service-tooltip {
+  position: relative;
+  margin-top: 12px;
+  padding: 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow);
+  z-index: 100;
+  animation: tooltipFadeIn 0.2s ease;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tooltip-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--primary);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  flex: 1;
+  min-width: 0;
+}
+
+.tooltip-close {
+  border: none;
+  background: none;
+  font-size: 18px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.tooltip-close:hover {
+  color: var(--primary);
+}
+
+.tooltip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tooltip-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tooltip-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+
+.tooltip-value {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* T&C Notice Box */
+.tc-notice {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  background: linear-gradient(145deg, #fff8e1, #fffdf5);
+  border: 1px solid #ffe082;
+  border-left: 4px solid #ffa000;
+  border-radius: var(--radius-panel);
+}
+
+.tc-icon {
+  font-size: 18px;
+  color: #f57c00;
+  flex-shrink: 0;
+}
+
+.tc-text {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.tc-text strong {
+  color: #e65100;
+}
+
+/* Make form-group contain tooltip properly */
+[data-field="serviceNeeded"] {
+  position: relative;
+  overflow: visible;
 }
