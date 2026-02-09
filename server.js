@@ -419,8 +419,8 @@ async function verifySupabaseSession(req) {
 
 function clearAuthCookies(res) {
   res.setHeader('Set-Cookie', [
-    'sb-access-token=; Path=/; Max-Age=0; SameSite=Lax',
-    'sb-refresh-token=; Path=/; Max-Age=0; SameSite=Lax'
+    'sb-access-token=; Path=/; Max-Age=0; SameSite=Lax; Secure',
+    'sb-refresh-token=; Path=/; Max-Age=0; SameSite=Lax; Secure'
   ]);
 }
 
