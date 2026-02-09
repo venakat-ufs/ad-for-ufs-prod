@@ -45,47 +45,68 @@
 
   <script>
     (async function() {
+      const form = document.getElementById('login-form');
+      const errorBanner = document.getElementById('error-banner');
+      const submitBtn = document.getElementById('submit-btn');
+
+      // Helper to clear all auth state
+      function clearAllAuthCookies() {
+        document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax';
+        document.cookie = 'sb-refresh-token=; path=/; max-age=0; SameSite=Lax';
+      }
+
       // Fetch Supabase config from server
-      const configRes = await fetch('/api/supabase-config');
-      const config = await configRes.json();
+      let config;
+      try {
+        const configRes = await fetch('/api/supabase-config');
+        config = await configRes.json();
+      } catch (e) {
+        errorBanner.textContent = 'Failed to load configuration. Please refresh.';
+        errorBanner.classList.remove('hidden');
+        return;
+      }
 
       if (!config.url || !config.anonKey) {
-        document.getElementById('error-banner').textContent = 'Authentication not configured. Please contact administrator.';
-        document.getElementById('error-banner').classList.remove('hidden');
+        errorBanner.textContent = 'Authentication not configured. Please contact administrator.';
+        errorBanner.classList.remove('hidden');
         return;
       }
 
       const supabase = window.supabase.createClient(config.url, config.anonKey);
 
-      // Check if already logged in - use getUser() to actually validate with server
-      // getSession() only reads localStorage and can return stale/expired sessions
-      // causing an infinite redirect loop with the server
-      try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (user && !error) {
-          // Refresh cookies with current valid token
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session) {
-            document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24}; SameSite=Lax`;
-            document.cookie = `sb-refresh-token=${session.refresh_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
-            window.location.href = '/admin';
-            return;
+      // Check if this is a logout redirect - always clear everything
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('logout')) {
+        await supabase.auth.signOut();
+        clearAllAuthCookies();
+        // Clean URL without reloading
+        window.history.replaceState({}, '', '/admin/login');
+        // Don't check session, just show the login form
+      } else {
+        // Not a logout - check if user has a valid session
+        try {
+          const { data: { user }, error } = await supabase.auth.getUser();
+          if (user && !error) {
+            // User is genuinely authenticated, refresh cookies and redirect
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session && session.access_token) {
+              document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24}; SameSite=Lax`;
+              document.cookie = `sb-refresh-token=${session.refresh_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+              window.location.href = '/admin';
+              return;
+            }
           }
-        }
-        // If user is not valid, clear any stale session to prevent future loops
-        if (error) {
+          // No valid user - clear everything stale
           await supabase.auth.signOut();
-          document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax';
-          document.cookie = 'sb-refresh-token=; path=/; max-age=0; SameSite=Lax';
+          clearAllAuthCookies();
+        } catch (e) {
+          // Validation failed, clear everything and show login
+          await supabase.auth.signOut().catch(() => {});
+          clearAllAuthCookies();
         }
-      } catch (e) {
-        // Session check failed, continue to show login form
       }
 
-      const form = document.getElementById('login-form');
-      const errorBanner = document.getElementById('error-banner');
-      const submitBtn = document.getElementById('submit-btn');
-
+      // Login form handler
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         errorBanner.classList.add('hidden');
@@ -94,6 +115,14 @@
 
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
+
+        if (!email || !password) {
+          errorBanner.textContent = 'Please enter both email and password.';
+          errorBanner.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Sign in';
+          return;
+        }
 
         try {
           const { data, error } = await supabase.auth.signInWithPassword({
@@ -110,7 +139,6 @@
           }
 
           if (data.session) {
-            // Store session token in cookie for server-side verification
             document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=${60 * 60 * 24}; SameSite=Lax`;
             document.cookie = `sb-refresh-token=${data.session.refresh_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
             window.location.href = '/admin';

@@ -496,16 +496,22 @@ app.post('/api/reverse-geocode', async (req, res) => {
 });
 
 app.get('/admin/login', async (req, res) => {
+  // If ?logout param is present, always clear cookies and show login form
+  if (req.query.logout) {
+    clearAuthCookies(res);
+    return res.sendFile(path.join(__dirname, 'public', 'admin-login.html'));
+  }
   const user = await verifySupabaseSession(req);
   if (user) {
     return res.redirect('/admin');
   }
+  clearAuthCookies(res);
   res.sendFile(path.join(__dirname, 'public', 'admin-login.html'));
 });
 
 app.get('/admin/logout', (_req, res) => {
   clearAuthCookies(res);
-  res.redirect('/admin/login');
+  res.redirect('/admin/login?logout=1');
 });
 
 app.post('/api/leads', async (req, res) => {
