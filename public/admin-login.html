@@ -57,11 +57,29 @@
 
       const supabase = window.supabase.createClient(config.url, config.anonKey);
 
-      // Check if already logged in
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        window.location.href = '/admin';
-        return;
+      // Check if already logged in - use getUser() to actually validate with server
+      // getSession() only reads localStorage and can return stale/expired sessions
+      // causing an infinite redirect loop with the server
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (user && !error) {
+          // Refresh cookies with current valid token
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24}; SameSite=Lax`;
+            document.cookie = `sb-refresh-token=${session.refresh_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+            window.location.href = '/admin';
+            return;
+          }
+        }
+        // If user is not valid, clear any stale session to prevent future loops
+        if (error) {
+          await supabase.auth.signOut();
+          document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax';
+          document.cookie = 'sb-refresh-token=; path=/; max-age=0; SameSite=Lax';
+        }
+      } catch (e) {
+        // Session check failed, continue to show login form
       }
 
       const form = document.getElementById('login-form');

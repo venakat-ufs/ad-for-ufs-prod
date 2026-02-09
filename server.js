@@ -430,6 +430,7 @@ async function requireAuth(req, res, next) {
     req.adminUser = user.email;
     return next();
   }
+  clearAuthCookies(res);
   return res.redirect('/admin/login');
 }
 
