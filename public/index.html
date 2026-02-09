@@ -98,7 +98,7 @@
             <p class="panel-hint suggestion-empty hidden" id="suggestion-empty">We will show recommended services automatically.</p>
             <div class="suggestion-grid hidden" id="suggestion-grid"></div>
             <div class="form-group client-only" data-field="serviceNeeded">
-              <label for="serviceNeeded">Service Needed* <button type="button" class="info-btn" id="service-info-btn" aria-label="Service information">&#9432;</button></label>
+              <label for="serviceNeeded">Service Needed*</label>
               <select id="serviceNeeded" name="serviceNeeded">
                 <option value="">Select a service</option>
                 <option value="Plumbing Diagnostic">Plumbing Diagnostic - $175</option>
@@ -123,21 +123,19 @@
                 <option value="Pest Control Visit">Pest Control Visit - $399</option>
                 <option value="Handyman - 1 Hour">Handyman - 1 Hour - $160</option>
                 <option value="Repair Bid / Estimate">Repair Bid / Estimate - $195</option>
+                <option value="Other">Other - Not listed above</option>
               </select>
               <small class="error"></small>
-              <div class="service-tooltip hidden" id="service-tooltip">
-                <div class="tooltip-header">
-                  <span class="tooltip-title" id="tooltip-title">Service Details</span>
-                  <button type="button" class="tooltip-close" id="tooltip-close">&times;</button>
-                </div>
-                <div class="tooltip-content">
-                  <div class="tooltip-row">
-                    <span class="tooltip-label">Best for:</span>
-                    <span class="tooltip-value" id="tooltip-bestfor">-</span>
+              <div class="service-detail-card hidden" id="service-tooltip">
+                <div class="detail-card-title" id="tooltip-title">Service Details</div>
+                <div class="detail-card-body">
+                  <div class="detail-card-row">
+                    <span class="detail-card-label">Best for</span>
+                    <span class="detail-card-value" id="tooltip-bestfor">-</span>
                   </div>
-                  <div class="tooltip-row">
-                    <span class="tooltip-label">Description:</span>
-                    <span class="tooltip-value" id="tooltip-description">-</span>
+                  <div class="detail-card-row">
+                    <span class="detail-card-label">What we do</span>
+                    <span class="detail-card-value" id="tooltip-description">-</span>
                   </div>
                 </div>
               </div>
@@ -299,6 +297,7 @@
 
             <div class="form-footer">
               <button type="button" class="ghost-btn" id="back-button">Back</button>
+              <button type="submit" class="primary-btn hidden" id="submit-btn">Submit Request</button>
               <button type="button" class="primary-btn" id="pay-btn">Book &amp; Pay</button>
             </div>
           </section>

@@ -389,19 +389,17 @@ document.addEventListener('DOMContentLoaded', () => {
     form.serviceNeeded.addEventListener('change', () => {
       updatePricePreview();
       updateServiceTooltip();
+      handleOtherServiceToggle();
     });
   }
 
-  // Service info tooltip functionality
-  const serviceInfoBtn = document.getElementById('service-info-btn');
+  // Service detail card - auto-shows on selection
   const serviceTooltip = document.getElementById('service-tooltip');
-  const tooltipClose = document.getElementById('tooltip-close');
   const tooltipTitle = document.getElementById('tooltip-title');
   const tooltipBestFor = document.getElementById('tooltip-bestfor');
   const tooltipDescription = document.getElementById('tooltip-description');
   let serviceDescriptions = {};
 
-  // Fetch service descriptions on load
   async function loadServiceDescriptions() {
     try {
       const response = await fetch('/api/service-descriptions');
@@ -417,7 +415,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateServiceTooltip() {
     const selectedService = form.serviceNeeded?.value;
-    if (!selectedService || !serviceDescriptions[selectedService]) {
+    if (!selectedService) {
+      if (serviceTooltip) serviceTooltip.classList.add('hidden');
+      return;
+    }
+    // Handle "Other" service
+    if (selectedService === 'Other') {
+      if (tooltipTitle) tooltipTitle.textContent = 'Other Service';
+      if (tooltipBestFor) tooltipBestFor.textContent = 'Services not listed in our catalog';
+      if (tooltipDescription) tooltipDescription.textContent = 'We will review your description and contact you shortly with a quote and next steps.';
+      if (serviceTooltip) serviceTooltip.classList.remove('hidden');
+      return;
+    }
+    if (!serviceDescriptions[selectedService]) {
       if (serviceTooltip) serviceTooltip.classList.add('hidden');
       return;
     }
@@ -425,42 +435,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tooltipTitle) tooltipTitle.textContent = selectedService;
     if (tooltipBestFor) tooltipBestFor.textContent = info.bestFor || '-';
     if (tooltipDescription) tooltipDescription.textContent = info.description || '-';
+    if (serviceTooltip) serviceTooltip.classList.remove('hidden');
   }
 
-  function toggleServiceTooltip() {
-    if (!serviceTooltip) return;
+  // Toggle between "Book & Pay" and "Submit Request" based on service selection
+  function handleOtherServiceToggle() {
     const selectedService = form.serviceNeeded?.value;
-    if (!selectedService || !serviceDescriptions[selectedService]) {
-      serviceTooltip.classList.add('hidden');
-      return;
-    }
-    updateServiceTooltip();
-    serviceTooltip.classList.toggle('hidden');
+    const isOther = selectedService === 'Other';
+    if (payBtn) payBtn.classList.toggle('hidden', isOther);
+    if (submitBtn) submitBtn.classList.toggle('hidden', !isOther);
+    // Hide price for "Other"
+    const priceSummary = form.querySelector('[data-field="priceSummary"]');
+    if (priceSummary) priceSummary.classList.toggle('hidden-field', isOther);
   }
-
-  if (serviceInfoBtn) {
-    serviceInfoBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleServiceTooltip();
-    });
-  }
-
-  if (tooltipClose) {
-    tooltipClose.addEventListener('click', () => {
-      if (serviceTooltip) serviceTooltip.classList.add('hidden');
-    });
-  }
-
-  // Close tooltip when clicking outside
-  document.addEventListener('click', (e) => {
-    if (serviceTooltip && !serviceTooltip.classList.contains('hidden')) {
-      const isClickInside = serviceTooltip.contains(e.target) || serviceInfoBtn?.contains(e.target);
-      if (!isClickInside) {
-        serviceTooltip.classList.add('hidden');
-      }
-    }
-  });
 
   if (payBtn) {
     payBtn.addEventListener('click', () => {
@@ -968,9 +955,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function updatePricePreview() {
     const serviceName = form.serviceNeeded.value;
-    if (!serviceName) {
+    if (!serviceName || serviceName === 'Other') {
       currentPriceCents = null;
-      if (priceAmount) priceAmount.textContent = 'Select a service to see price.';
+      if (priceAmount) priceAmount.textContent = serviceName === 'Other' ? '' : 'Select a service to see price.';
       if (suggestionGrid) {
         suggestionGrid.querySelectorAll('.suggestion-card').forEach((card) => {
           card.classList.remove('selected');
@@ -1084,6 +1071,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (value) {
           form.serviceNeeded.value = value;
           updatePricePreview();
+          updateServiceTooltip();
+          handleOtherServiceToggle();
         }
         suggestionGrid.querySelectorAll('.suggestion-card').forEach((item) => {
           item.classList.remove('selected');

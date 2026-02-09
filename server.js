@@ -67,7 +67,8 @@ const SERVICE_OPTIONS = [
   'Caulking Repair',
   'Pest Control Visit',
   'Handyman - 1 Hour',
-  'Repair Bid / Estimate'
+  'Repair Bid / Estimate',
+  'Other'
 ];
 
 // Service prices in cents
@@ -237,7 +238,7 @@ const PRICE_FALLBACK_CENTS = 19500;
 
 function getServicePriceCents(serviceName) {
   const value = String(serviceName || '').trim();
-  if (!value) return null;
+  if (!value || value === 'Other') return null;
 
   // Direct lookup from SERVICE_PRICES
   if (SERVICE_PRICES[value]) {
