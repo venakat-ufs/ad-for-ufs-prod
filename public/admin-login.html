@@ -59,6 +59,9 @@
       let config;
       try {
         const configRes = await fetch('/api/supabase-config');
+        if (!configRes.ok) {
+          throw new Error(`Config request failed: ${configRes.status}`);
+        }
         config = await configRes.json();
       } catch (e) {
         errorBanner.textContent = 'Failed to load configuration. Please refresh.';
