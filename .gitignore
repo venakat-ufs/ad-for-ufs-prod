@@ -3,3 +3,7 @@ node_modules/
 .env.example
 data/
 github token.txt
+
+.claude/
+main strip key.txt
+.env
